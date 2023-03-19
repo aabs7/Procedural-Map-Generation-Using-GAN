@@ -1,0 +1,4 @@
+scikit-image
+pytest
+matplotlib
+sknw

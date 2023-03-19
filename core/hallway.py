@@ -4,37 +4,36 @@ import scipy
 from skimage.morphology import skeletonize
 import sknw
 
-
 import matplotlib
-import utils
+import utils 
 import matplotlib.pyplot as plt
-
+from .constants import * 
 
 matplotlib.use('TkAgg')
 
-L_TMP = 100
-L_UNSET = -1
-L_BKD = 0
-L_CLUTTER = 1
-L_DOOR = 2
-L_HALL = 3
-L_ROOM = 4
-L_UNK = 5
-L_LINES = 7
+# L_TMP = 100
+# L_UNSET = -1
+# L_BKD = 0
+# L_CLUTTER = 1
+# L_DOOR = 2
+# L_HALL = 3
+# L_ROOM = 4
+# L_UNK = 5
+# L_LINES = 7
 
-ROOM_DOOR_SPACE = 1
-HALLWAY_ROOM_SPACE = 1
-DOOR_SIZE = 8
+# ROOM_DOOR_SPACE = 1
+# HALLWAY_ROOM_SPACE = 1
+# DOOR_SIZE = 8
 
-semantic_labels = {
-    'background': L_BKD,
-    'clutter': L_CLUTTER,
-    'door': L_DOOR,
-    'hallway': L_HALL,
-    'room': L_ROOM,
-    'other': L_UNK,
-    'lines': L_LINES,
-}
+# semantic_labels = {
+#     'background': L_BKD,
+#     'clutter': L_CLUTTER,
+#     'door': L_DOOR,
+#     'hallway': L_HALL,
+#     'room': L_ROOM,
+#     'other': L_UNK,
+#     'lines': L_LINES,
+# }
 
 
 def generate_random_lines(num_of_lines,
@@ -291,27 +290,27 @@ def get_properties_of_map():
     pass
 
 
-if __name__ == '__main__':
-    parser = utils.get_parser()
-    args = parser.parse_args()
-    grid_size = args.grid_size
-    num_of_hallways = args.num_hallways
-    min_spacing_hallways = args.min_spacing_hallways
-    boundary_threshold = args.boundary_threshold
-    hallway_width = args.hallway_width
-    seed = args.seed
+# if __name__ == '__main__':
+#     parser = utils.get_parser()
+#     args = parser.parse_args()
+#     grid_size = args.grid_size
+#     num_of_hallways = args.num_hallways
+#     min_spacing_hallways = args.min_spacing_hallways
+#     boundary_threshold = args.boundary_threshold
+#     hallway_width = args.hallway_width
+#     seed = args.seed
 
-    grid_with_lines, line_segment = generate_random_lines(
-        num_of_lines=num_of_hallways, grid_size=grid_size, boundary_threshold=boundary_threshold, spacing_between_lines=min_spacing_hallways, seed=seed)
-    grid_with_hallway = inflate_using_convolution(
-        grid_with_lines,from_label=semantic_labels['lines'], to_label=semantic_labels['hallway'], inflation_scale=hallway_width)
-    grid_with_hallway = grid_with_hallway.copy()
-    grid_with_room_space = inflate_using_convolution(grid_with_hallway,from_label=semantic_labels['hallway'], to_label=semantic_labels['room'], inflation_scale=10, preserve_previous_label=True)
-    plt.figure(figsize=(16, 8))
-    plt.subplot(131)
-    plt.imshow(grid_with_lines, cmap='viridis')
-    plt.subplot(132)
-    plt.imshow(grid_with_hallway, cmap='viridis')
-    plt.subplot(133)
-    plt.imshow(grid_with_room_space, cmap='viridis')
-    plt.show()
+#     grid_with_lines, line_segment = generate_random_lines(
+#         num_of_lines=num_of_hallways, grid_size=grid_size, boundary_threshold=boundary_threshold, spacing_between_lines=min_spacing_hallways, seed=seed)
+#     grid_with_hallway = inflate_using_convolution(
+#         grid_with_lines,from_label=semantic_labels['lines'], to_label=semantic_labels['hallway'], inflation_scale=hallway_width)
+#     grid_with_hallway = grid_with_hallway.copy()
+#     grid_with_room_space = inflate_using_convolution(grid_with_hallway,from_label=semantic_labels['hallway'], to_label=semantic_labels['room'], inflation_scale=10, preserve_previous_label=True)
+#     plt.figure(figsize=(16, 8))
+#     plt.subplot(131)
+#     plt.imshow(grid_with_lines, cmap='viridis')
+#     plt.subplot(132)
+#     plt.imshow(grid_with_hallway, cmap='viridis')
+#     plt.subplot(133)
+#     plt.imshow(grid_with_room_space, cmap='viridis')
+#     plt.show()
