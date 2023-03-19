@@ -228,7 +228,7 @@ def generate_random_lines(num_of_lines,
     return final_semantic_grid, line_segment
 
 
-def inflate_lines_to_create_hallways(grid, inflation_scale=5):
+def inflate_using_convolution(grid, from_label=semantic_labels['lines'], to_label=semantic_labels['hallway'],  inflation_scale=5, preserve_previous_label=False):
     """Inflate the lines by a kernel
 
     Args:
@@ -239,16 +239,19 @@ def inflate_lines_to_create_hallways(grid, inflation_scale=5):
         grid_with_hallways: grid with inflated lines as hallways
     """
     original_grid = np.zeros_like(grid)
-    original_grid[grid == semantic_labels['lines']] = 1
+    original_grid[grid == from_label] = 1
     kernel_dim = 2 * inflation_scale + 1
     hallway_inflation_kernel = np.ones((kernel_dim, kernel_dim), dtype=int)
 
-    grid_with_hallway = scipy.ndimage.convolve(
+    new_grid= scipy.ndimage.convolve(
         original_grid, hallway_inflation_kernel)
-    grid_with_hallway[grid_with_hallway > 0] = semantic_labels['hallway']
-    grid_with_hallway[grid_with_hallway == 0] = semantic_labels['background']
+    new_grid[new_grid> 0] = to_label
+    new_grid[new_grid== 0] = semantic_labels['background']
 
-    return grid_with_hallway
+    if preserve_previous_label:
+        new_grid[grid == from_label] = from_label
+
+    return new_grid.copy()
 
 
 def determine_intersections(hallway_mask):
@@ -300,12 +303,15 @@ if __name__ == '__main__':
 
     grid_with_lines, line_segment = generate_random_lines(
         num_of_lines=num_of_hallways, grid_size=grid_size, boundary_threshold=boundary_threshold, spacing_between_lines=min_spacing_hallways, seed=seed)
-    grid_with_hallway = inflate_lines_to_create_hallways(
-        grid_with_lines, inflation_scale=hallway_width)
+    grid_with_hallway = inflate_using_convolution(
+        grid_with_lines,from_label=semantic_labels['lines'], to_label=semantic_labels['hallway'], inflation_scale=hallway_width)
     grid_with_hallway = grid_with_hallway.copy()
+    grid_with_room_space = inflate_using_convolution(grid_with_hallway,from_label=semantic_labels['hallway'], to_label=semantic_labels['room'], inflation_scale=10, preserve_previous_label=True)
     plt.figure(figsize=(16, 8))
-    plt.subplot(121)
+    plt.subplot(131)
     plt.imshow(grid_with_lines, cmap='viridis')
-    plt.subplot(122)
+    plt.subplot(132)
     plt.imshow(grid_with_hallway, cmap='viridis')
+    plt.subplot(133)
+    plt.imshow(grid_with_room_space, cmap='viridis')
     plt.show()
