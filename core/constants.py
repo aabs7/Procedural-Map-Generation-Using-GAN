@@ -1,10 +1,10 @@
-L_TMP = 100
-L_UNSET = -1
-L_BKD = 0
+L_TMP = 100 
+L_UNSET = -1 
+L_BKD = 0 # unplottable space
 L_CLUTTER = 1
 L_DOOR = 2
-L_HALL = 3
-L_ROOM = 4
+L_HALL = 3 # Hallway code
+L_ROOM = 4 # Plottable space 
 L_UNK = 5
 L_LINES = 7
 
