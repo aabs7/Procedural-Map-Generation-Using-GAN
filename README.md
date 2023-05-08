@@ -23,6 +23,7 @@ To train on mnist using DCGAN, run:
 To train on celeb dataset using DCGAN, run:
 ```make train-celebrity```
 
+[Note: To run `train-celebrity` you need celebA dataset. Download the celebA dataset from [here](https://www.kaggle.com/datasets/504743cb487a5aed565ce14238c6343b7d650ffd28c071f03f2fd9b25819e6c9), rename it as celeb_dataset.zip and put it under `freeze_files/zip_dataset/`]
 To train on floor-dataset using DCGAN, run:
 ```make train-floor```
 
@@ -31,4 +32,5 @@ To train all at once, run:
 
 To visualize how DCGAN is performing, run:
 ```make visualize-data```
+
 [Note: You have to have tensorboard installed for this]
