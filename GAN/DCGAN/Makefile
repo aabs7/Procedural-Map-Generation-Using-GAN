@@ -33,7 +33,7 @@ train-floor:
 
 
 .PHONY: train-all
-train-all: train-mnist train-celebrity
+train-all: train-mnist train-celebrity train-floor
 
 .PHONY: visualize-data
 visualize-data:
