@@ -14,7 +14,7 @@ if __name__ == '__main__':
     fixed_noise = torch.randn(1000, Z_DIM, 1, 1).to(device)
     # load generator model and generate image from fixed noise
     generator = Generator(Z_DIM, 3, 64).to(device)
-    generator.load_state_dict(torch.load('freeze_files/final_model/floor_model.pt'))
+    generator.load_state_dict(torch.load('freeze_files/final_model/floor_model.pt', map_location=torch.device('cpu')))
     generator.eval()
     with torch.no_grad():
         fake = generator(fixed_noise)
